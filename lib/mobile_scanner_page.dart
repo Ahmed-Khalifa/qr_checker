@@ -98,6 +98,23 @@ class _MobileScannerPageState extends State<MobileScannerPage>
   }
 }
 
+_getAnalysisReport() async {
+  var url = Uri.parse(
+      'https://www.virustotal.com/api/v3/analyses/u-a93d5ddfc2b7114b80839a5055413cf9f2158f3565bb546828aed2f739f3803b-1729400726');
+
+  var req = http.Request('GET', url);
+  req.headers.addAll(getUrlAnalysisHeaders);
+
+  var res = await req.send();
+  final resBody = await res.stream.bytesToString();
+
+  if (res.statusCode >= 200 && res.statusCode < 300) {
+    print(resBody);
+  } else {
+    print(res.reasonPhrase);
+  }
+}
+
 Future<void> _scanUrl(Barcode? barcode) async {
   String? urlEncoded = base64UrlEncode(barcode!.rawBytes!.toList());
 
@@ -106,7 +123,7 @@ Future<void> _scanUrl(Barcode? barcode) async {
   var body = {'url': urlEncoded};
 
   var req = http.Request('POST', url);
-  req.headers.addAll(headers);
+  req.headers.addAll(scanUrlHeaders);
   req.bodyFields = body;
 
   var res = await req.send();
