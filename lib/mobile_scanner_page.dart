@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_checker/config/data.dart';
+import 'package:qr_checker/models/analysis_id_model.dart';
+import 'package:qr_checker/pages/results_page.dart';
 
 class MobileScannerPage extends StatefulWidget {
   const MobileScannerPage({super.key});
@@ -19,6 +21,7 @@ class _MobileScannerPageState extends State<MobileScannerPage>
     detectionSpeed: DetectionSpeed.noDuplicates,
     // required options for the scanner
   );
+  late BuildContext context;
   Barcode? _barcode;
   StreamSubscription<Object?>? _subscription;
 
@@ -26,12 +29,7 @@ class _MobileScannerPageState extends State<MobileScannerPage>
     if (mounted) {
       setState(() {
         _barcode = barcodes.barcodes.firstOrNull;
-
-        _scanUrl(_barcode);
-
-        if (kDebugMode) {
-          print(_barcode?.rawValue);
-        }
+        Navigator.pushNamed(context, ResultsPage.id, arguments: _barcode);
       });
     }
   }
@@ -92,46 +90,9 @@ class _MobileScannerPageState extends State<MobileScannerPage>
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     return MobileScanner(
       controller: controller,
     );
-  }
-}
-
-_getAnalysisReport() async {
-  var url = Uri.parse(
-      'https://www.virustotal.com/api/v3/analyses/u-a93d5ddfc2b7114b80839a5055413cf9f2158f3565bb546828aed2f739f3803b-1729400726');
-
-  var req = http.Request('GET', url);
-  req.headers.addAll(getUrlAnalysisHeaders);
-
-  var res = await req.send();
-  final resBody = await res.stream.bytesToString();
-
-  if (res.statusCode >= 200 && res.statusCode < 300) {
-    print(resBody);
-  } else {
-    print(res.reasonPhrase);
-  }
-}
-
-Future<void> _scanUrl(Barcode? barcode) async {
-  String? urlEncoded = base64UrlEncode(barcode!.rawBytes!.toList());
-
-  var url = Uri.parse('https://www.virustotal.com/api/v3/urls');
-
-  var body = {'url': urlEncoded};
-
-  var req = http.Request('POST', url);
-  req.headers.addAll(scanUrlHeaders);
-  req.bodyFields = body;
-
-  var res = await req.send();
-  final resBody = await res.stream.bytesToString();
-
-  if (res.statusCode >= 200 && res.statusCode < 300) {
-    print(resBody);
-  } else {
-    print(res.reasonPhrase);
   }
 }
