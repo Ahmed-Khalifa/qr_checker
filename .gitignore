@@ -41,7 +41,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-lib/config/data.dart
 lib/config/results.json
 lib/json_models/analysis_report_model2/abusix.dart
 lib/json_models/analysis_report_model2/acronis.dart
@@ -148,3 +147,4 @@ lib/json_models/analysis_report_model2/zero_cert.dart
 lib/json_models/analysis_report_model2/zero_fox.dart
 lib/json_models/analysis_report_model2/zero_x_si_f33d.dart
 lib/models/arm.dart
+lib/private/*

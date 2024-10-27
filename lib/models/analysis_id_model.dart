@@ -3,7 +3,7 @@ class AnalysisIdModel {
 
   AnalysisIdModel({Data? data}) {
     if (data != null) {
-      this._data = data;
+      _data = data;
     }
   }
 
@@ -11,13 +11,13 @@ class AnalysisIdModel {
   set data(Data? data) => _data = data;
 
   AnalysisIdModel.fromJson(Map<String, dynamic> json) {
-    _data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this._data != null) {
-      data['data'] = this._data!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (_data != null) {
+      data['data'] = _data!.toJson();
     }
     return data;
   }
@@ -30,13 +30,13 @@ class Data {
 
   Data({String? type, String? id, Links? links}) {
     if (type != null) {
-      this._type = type;
+      _type = type;
     }
     if (id != null) {
-      this._id = id;
+      _id = id;
     }
     if (links != null) {
-      this._links = links;
+      _links = links;
     }
   }
 
@@ -50,15 +50,15 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     _type = json['type'];
     _id = json['id'];
-    _links = json['links'] != null ? new Links.fromJson(json['links']) : null;
+    _links = json['links'] != null ? Links.fromJson(json['links']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this._type;
-    data['id'] = this._id;
-    if (this._links != null) {
-      data['links'] = this._links!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['type'] = _type;
+    data['id'] = _id;
+    if (_links != null) {
+      data['links'] = _links!.toJson();
     }
     return data;
   }
@@ -69,7 +69,7 @@ class Links {
 
   Links({String? self}) {
     if (self != null) {
-      this._self = self;
+      _self = self;
     }
   }
 
@@ -81,8 +81,8 @@ class Links {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['self'] = this._self;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['self'] = _self;
     return data;
   }
 }

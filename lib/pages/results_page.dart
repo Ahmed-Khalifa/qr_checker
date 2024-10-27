@@ -20,23 +20,6 @@ class _ResultsPageState extends State<ResultsPage> {
   Widget build(BuildContext context) {
     return const Placeholder();
   }
-
-  _getAnalysisReport(String id) async {
-    var url = Uri.parse('https://www.virustotal.com/api/v3/analyses/$id');
-
-    var req = http.Request('GET', url);
-    req.headers.addAll(getUrlAnalysisHeaders);
-
-    var res = await req.send();
-    final resBody = await res.stream.bytesToString();
-
-    if (res.statusCode >= 200 && res.statusCode < 300) {
-      print(resBody);
-    } else {
-      print(res.reasonPhrase);
-    }
-  }
-
   Future<void> _scanUrl(Barcode? barcode) async {
     String? urlRaw = barcode?.rawValue;
     if (kDebugMode) {
@@ -63,8 +46,6 @@ class _ResultsPageState extends State<ResultsPage> {
       }
       dynamic resBodyJson = jsonDecode(resBody);
       AnalysisIdModel analysisIdModel = AnalysisIdModel.fromJson(resBodyJson);
-      // print(analysisIdModel.toJson()["data"]["id"].toString());
-      // _getAnalysisReport(analysisIdModel.toJson()["data"]["id"]);
       if (mounted) {
         Navigator.pushNamed(context, ResultsPage.id,
             arguments: analysisIdModel);
@@ -73,4 +54,22 @@ class _ResultsPageState extends State<ResultsPage> {
       print('ERROR: ${res.reasonPhrase}');
     }
   }
+
+  _getAnalysisReport(String id) async {
+    var url = Uri.parse('https://www.virustotal.com/api/v3/analyses/$id');
+
+    var req = http.Request('GET', url);
+    req.headers.addAll(getUrlAnalysisHeaders);
+
+    var res = await req.send();
+    final resBody = await res.stream.bytesToString();
+
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+      print(resBody);
+    } else {
+      print(res.reasonPhrase);
+    }
+  }
+
+
 }
