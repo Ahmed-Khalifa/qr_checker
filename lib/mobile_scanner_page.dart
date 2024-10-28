@@ -24,7 +24,9 @@ class _MobileScannerPageState extends State<MobileScannerPage>
     if (mounted) {
       setState(() {
         _barcode = barcodes.barcodes.firstOrNull;
-        Navigator.pushNamed(context, ResultsPage.id, arguments: _barcode);
+
+        Navigator.pushNamed(context, ResultsPage.id,
+            arguments: {'barcode_data': _barcode});
       });
     }
   }
